@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0b0b0d" media="(prefers-color-scheme: dark)" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Daily Tracker" />
+  <meta name="description" content="Monthly recruiter action tracker with persistent daily progress, goals, badges, and custom tasks." />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css" />
+  <title>Daily Talent Tracker</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar glass" aria-label="Application toolbar">
+      <div class="brand-block"><div class="app-icon" aria-hidden="true">✓</div><div><p class="eyebrow">Recruiter productivity</p><h1>Daily Talent Tracker</h1></div></div>
+      <div class="toolbar-actions"><button class="icon-button" id="todayBtn" type="button" aria-label="Go to today" title="Today"><span aria-hidden="true">◎</span></button><button class="primary-button compact" id="addTaskBtn" type="button">＋ Add Action</button></div>
+    </header>
+    <main class="content-grid">
+      <section class="hero-card glass" aria-labelledby="selectedDateHeading">
+        <div class="hero-copy"><div class="date-nav"><button class="icon-button subtle" id="prevDayBtn" type="button" aria-label="Previous day">‹</button><div><p class="eyebrow" id="selectedDateLong">Monday, September 14</p><h2 id="selectedDateHeading">Today</h2></div><button class="icon-button subtle" id="nextDayBtn" type="button" aria-label="Next day">›</button></div><p class="hero-subtitle">Stay consistent. Every action is saved automatically.</p></div>
+        <div class="progress-ring-wrap" aria-label="Daily completion"><div class="progress-ring" id="progressRing"><div class="progress-ring-inner"><strong id="dailyProgressPct">0%</strong><span>complete</span></div></div><p id="dailyProgressText">0 of 0 actions</p></div>
+      </section>
+      <section class="tasks-panel glass" aria-labelledby="actionsHeading"><div class="section-header"><div><p class="eyebrow">Daily focus</p><h2 id="actionsHeading">Actions</h2></div><div class="save-status" id="saveStatus" role="status" aria-live="polite">Saved ✓</div></div><div id="taskList" class="task-list"></div><button class="add-inline" id="addTaskInlineBtn" type="button">＋ Add another action</button></section>
+      <aside class="sidebar-stack">
+        <section class="calendar-card glass" aria-labelledby="calendarHeading"><div class="section-header calendar-header"><button class="icon-button subtle" id="prevMonthBtn" type="button" aria-label="Previous month">‹</button><div class="calendar-title-wrap"><p class="eyebrow">Monthly view</p><h2 id="calendarHeading">September 2026</h2></div><button class="icon-button subtle" id="nextMonthBtn" type="button" aria-label="Next month">›</button></div><div class="weekdays" aria-hidden="true"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div><div class="calendar-grid" id="calendarGrid" role="grid" aria-label="Monthly progress calendar"></div><div class="calendar-legend" aria-label="Calendar legend"><span><i class="dot complete"></i> Complete</span><span><i class="dot partial"></i> In progress</span><span><i class="dot empty"></i> No activity</span></div></section>
+        <section class="stats-card glass" aria-labelledby="statsHeading"><div class="section-header"><div><p class="eyebrow">Performance</p><h2 id="statsHeading">This month</h2></div></div><div class="stats-grid"><article class="stat-tile"><span>Completion</span><strong id="monthCompletion">0%</strong></article><article class="stat-tile"><span>Current streak</span><strong id="currentStreak">0 days</strong></article><article class="stat-tile"><span>Perfect days</span><strong id="perfectDays">0</strong></article><article class="stat-tile"><span>Actions done</span><strong id="actionsDone">0</strong></article></div><div class="mini-totals" id="miniTotals"></div></section>
+        <section class="badges-card glass" aria-labelledby="badgesHeading"><div class="section-header"><div><p class="eyebrow">Momentum</p><h2 id="badgesHeading">Badges</h2></div></div><div class="badges-grid" id="badgesGrid"></div></section>
+        <section class="backup-card glass" aria-labelledby="backupHeading"><div class="section-header"><div><p class="eyebrow">Data</p><h2 id="backupHeading">Backup</h2></div></div><p>Your progress is stored on this device. Export a backup anytime.</p><div class="backup-actions"><button class="secondary-button" id="exportBtn" type="button">Export data</button><label class="secondary-button file-button" for="importInput">Import data</label><input id="importInput" type="file" accept="application/json,.json" hidden /></div></section>
+      </aside>
+    </main>
+  </div>
+  <dialog id="taskDialog" class="sheet-dialog"><form method="dialog" id="taskForm" class="sheet-card"><div class="sheet-handle" aria-hidden="true"></div><div class="sheet-header"><div><p class="eyebrow">Customize your workflow</p><h2>Add Action</h2></div><button class="icon-button subtle" value="cancel" aria-label="Close dialog">×</button></div><label class="field-label" for="taskName">Action name</label><div class="text-field-wrap"><input id="taskName" name="taskName" class="text-field" type="text" maxlength="60" placeholder="Example: Schedule NHO" required autocomplete="off" /><button id="clearTaskName" class="clear-field" type="button" aria-label="Clear action name">×</button></div><div class="field-row"><div><label class="field-label" for="taskGoal">Daily goal</label><p class="field-help">Optional. Use 1 for a simple checklist.</p></div><input id="taskGoal" name="taskGoal" class="number-field" type="number" min="1" max="999" value="1" inputmode="numeric" /></div><fieldset class="segmented-fieldset"><legend>Repeat</legend><label><input type="radio" name="repeat" value="today" checked /><span>Today only</span></label><label><input type="radio" name="repeat" value="workdays" /><span>Every workday</span></label></fieldset><div class="sheet-actions"><button class="secondary-button" type="button" id="cancelDialogBtn">Cancel</button><button class="primary-button" type="submit" value="default">Add Action</button></div></form></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js" defer></script>
+</body>
+</html>
